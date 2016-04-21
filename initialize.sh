@@ -22,8 +22,10 @@ fi
 
 if [ "$(ls -A $SYNCDIR)" ]; then
      echo "$SYNCDIR is not empty, going to resume"
-     nohup afl-fuzz -m 200 -i - -o /fuzzing/syncdir -M php-master-fuzzer php @@  > eventlog.log &
+     exec afl-fuzz -m 200 -i - -o /fuzzing/syncdir -M php-master-fuzzer php @@
 else
     echo "$SYNCDIR is empty, going to start new"
-    nohup afl-fuzz -m 200 -i /fuzzing/inputs -o /fuzzing/syncdir -M php-master-fuzzer php @@  > eventlog.log &
+    exec  afl-fuzz -m 200 -i /fuzzing/inputs -o /fuzzing/syncdir -M php-master-fuzzer php @@
 fi
+
+tail -f /dev/null

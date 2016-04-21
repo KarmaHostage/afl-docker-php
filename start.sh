@@ -1,0 +1,16 @@
+#!/bin/bash
+CONTAINER=$1
+
+RUNNING=$(docker inspect --format="{{ .State.Running }}" $CONTAINER 2> /dev/null)
+
+if [ $? -eq 1 ]; then
+  echo "$CONTAINER does not exist, creating now"
+  docker run --name $CONTAINER -d qkyrie/afl-php
+else
+  if [ "$RUNNING" == "false" ]; then
+    echo "$CONTAINER exists but is not running, restarting now"
+    docker start $CONTAINER
+  else
+    echo "$CONTAINER is already running."
+  fi
+fi
