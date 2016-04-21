@@ -1,4 +1,7 @@
 #!/bin/bash
+
+[ -z "$1" ] && echo "No argument supplied, please supply a name for your fuzzer" && exit 1
+
 CONTAINER=$1
 
 RUNNING=$(docker inspect --format="{{ .State.Running }}" $CONTAINER 2> /dev/null)
